@@ -17,6 +17,5 @@ blocks:
           - checkout
           - docker pull "$DOCKER_USERNAME"/benchmark:latest || true
           - docker build --cache-from "$DOCKER_USERNAME"/benchmark:latest -t "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID .
-          - docker build -t "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID .
           - docker push "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID
           - docker images
