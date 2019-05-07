@@ -10,11 +10,22 @@ blocks:
     task:
       secrets:
         - name: markoa-dockerhub 
-      jobs:
-      - name: Docker Pull and Push
+      prologue:
         commands:
+          # Authenticate to the registry for all jobs in the block
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - checkout
+      jobs:
+      - name: Docker Pull
+        commands:
           - docker pull "$DOCKER_USERNAME"/benchmark:latest || true
+      jobs:
+      - name: Docker build
+        commands:
+          - docker images
           - docker build --cache-from "$DOCKER_USERNAME"/benchmark:latest -t "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID .
+          - docker images
+      jobs:
+      - name: Docker Push
+        commands:
           - docker push "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID
