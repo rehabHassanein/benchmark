@@ -15,6 +15,6 @@ blocks:
         commands:
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - checkout
-          - docker pull sonarqube:5.1
-          - docker tag sonarqube:5.1 "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID
+          - docker pull "$DOCKER_USERNAME"/benchmark:latest || true
+          - docker build --cache-from "$DOCKER_USERNAME"/benchmark:latest -t "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID .
           - docker push "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID
