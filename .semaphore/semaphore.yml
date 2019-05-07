@@ -1,29 +1,21 @@
 version: v1.0
-name: First pipeline example
+name: Docker simple pipeline
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
 
 blocks:
-  - name: "Build"
+  - name: "Docker"
     task:
       secrets:
         - name: markoa-dockerhub 
-      prologue:
+      jobs:
+      - name: Pull, build & Push
         commands:
-          # Authenticate to the registry for all jobs in the block
           - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
           - checkout
-      jobs:
-      - name: Docker Pull
-        commands:
           - docker pull "$DOCKER_USERNAME"/benchmark:latest || true
-      - name: Docker build
-        commands:
-          - docker images
           - docker build --cache-from "$DOCKER_USERNAME"/benchmark:latest -t "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID .
-          - docker images
-      - name: Docker Push
-        commands:
           - docker push "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID
+          - docker images
