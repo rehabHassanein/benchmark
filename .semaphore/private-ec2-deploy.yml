@@ -8,8 +8,9 @@ agent:
 blocks:
   - name: Deploy
     task:
-      # Mount a secret which defines private-instance.pem, $JUMP_HOST and
-      # $PRIVATE_INSTANCE environment variables.
+      # Mount a secret "aws-credentials-private-ec2" which defines private-instance.pem file
+      # placed in the home directory, as well as $JUMP_HOST and $PRIVATE_INSTANCE environment
+      # variables.
       # For info on creating secrets, see:
       # https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
       secrets:
@@ -18,4 +19,9 @@ blocks:
         - name: Deploy to EC2
           commands:
             - checkout
-            - ssh -i ~/private-instance.pem -o "StrictHostKeyChecking=no" -J $JUMP_HOST $PRVATE_INSTANCE "ifconfig"
+            - cp ~/private-instance.pem ~/.ssh && chmod 600 ~/.ssh/private-instance.pem
+	    - printf "Host jump\n  User ec2-user\n  StrictHostKeyChecking no\n  HostName $JUMP_HOST\n  IdentityFile ~/private-instance.pem\n  DynamicForward 1028\n" >> ~/.ssh/config
+	    - printf "Host private\n  User ec2-user\n  StrictHostKeyChecking no\n  HostName $PRIVATE_INSTANCE\n  IdentityFile ~/private-instance.pem\n  ProxyJump jump" >> ~/.ssh/config
+            - ssh private "echo Hello from Private instance!"
+            # Example of copying files to the private instance
+            - scp commands.sh private:
