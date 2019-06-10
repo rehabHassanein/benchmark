@@ -14,10 +14,10 @@ blocks:
       - name: Ghost build
         commands:
           - echo "Hello World!" 
-#promotions:
-#  - name: Private EC2 deploy
-#    pipeline_file: private-ec2-deploy.yml
-#    auto_promote_on:
-#      - result: passed
-#        branch:
-#          - chocolate
+promotions:
+  - name: Private EC2 deploy
+    pipeline_file: private-ec2-deploy.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - chocolate

@@ -1,0 +1,21 @@
+# .semaphore/private-ec2-deploy.yml
+version: v1.0
+name: Deploy to private EC2
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Deploy
+    task:
+      # Mount a secret which defines private-instance.pem, $JUMP_HOST and
+      # $PRIVATE_INSTANCE environment variables.
+      # For info on creating secrets, see:
+      # https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
+      secrets:
+        - name: aws-credentials-private-ec2
+      jobs:
+        - name: Deploy to EC2
+          commands:
+            - checkout
+            - ssh -i ~/private-instance.pem -J $JUMP_HOST $PRVATE_INSTANCE "ifconfig"
