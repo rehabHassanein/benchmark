@@ -13,7 +13,7 @@ blocks:
       jobs:
       - name: Ghost build
         commands:
-          - echo "Hello World!" > ~/file.send
+          - echo "Hello World!"
 promotions:
   - name: Private EC2 deploy
     pipeline_file: private-ec2-deploy.yml

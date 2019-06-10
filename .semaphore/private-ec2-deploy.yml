@@ -24,4 +24,5 @@ blocks:
             - printf "Host private\n  User ec2-user\n  StrictHostKeyChecking no\n  HostName $PRIVATE_INSTANCE\n  IdentityFile ~/.ssh/private-instance.pem\n  ProxyJump jump" >> ~/.ssh/config
             - ssh private "echo Hello from Private instance!"
             # Example of copying files to the private instance
+            - echo "The cat is alive!" > ~/file.send
             - scp ~/file.send private:~/
