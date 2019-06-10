@@ -18,4 +18,4 @@ blocks:
         - name: Deploy to EC2
           commands:
             - checkout
-            - ssh -i ~/private-instance.pem -J $JUMP_HOST $PRVATE_INSTANCE "ifconfig"
+            - ssh -i ~/private-instance.pem -o "StrictHostKeyChecking=no" -J $JUMP_HOST $PRVATE_INSTANCE "ifconfig"
