@@ -20,8 +20,8 @@ blocks:
           commands:
             - checkout
             - cp ~/private-instance.pem ~/.ssh && chmod 600 ~/.ssh/private-instance.pem
-	    - printf "Host jump\n  User ec2-user\n  StrictHostKeyChecking no\n  HostName $JUMP_HOST\n  IdentityFile ~/private-instance.pem\n  DynamicForward 1028\n" >> ~/.ssh/config
-	    - printf "Host private\n  User ec2-user\n  StrictHostKeyChecking no\n  HostName $PRIVATE_INSTANCE\n  IdentityFile ~/private-instance.pem\n  ProxyJump jump" >> ~/.ssh/config
+            - printf "Host jump\n  User ec2-user\n  StrictHostKeyChecking no\n  HostName $JUMP_HOST\n  IdentityFile ~/private-instance.pem\n  DynamicForward 1028\n" >> ~/.ssh/config
+            - printf "Host private\n  User ec2-user\n  StrictHostKeyChecking no\n  HostName $PRIVATE_INSTANCE\n  IdentityFile ~/private-instance.pem\n  ProxyJump jump" >> ~/.ssh/config
             - ssh private "echo Hello from Private instance!"
             # Example of copying files to the private instance
             - scp commands.sh private:
