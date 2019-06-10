@@ -6,16 +6,18 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Docker"
+  - name: "Ghosts and Chocolate"
     task:
       secrets:
         - name: markoa-dockerhub 
       jobs:
-      - name: Pull, Build & Push
+      - name: Ghost build
         commands:
-          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-          - checkout
-          - docker pull "$DOCKER_USERNAME"/benchmark:latest || true
-          - docker build --cache-from "$DOCKER_USERNAME"/benchmark:latest -t "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID .
-          - docker push "$DOCKER_USERNAME"/benchmark:$SEMAPHORE_WORKFLOW_ID
-          - docker images
+          - echo "Hello World!" 
+promotions:
+  - name: Private EC2 deploy
+    pipeline_file: private-ec2-deploy.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - chocolate
