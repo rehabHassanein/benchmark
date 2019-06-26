@@ -14,6 +14,9 @@ blocks:
       - name: Ghost build
         commands:
           - echo "Hello World!"
+          - echo $DOCKER_USERNAME
+          - echo "${DOCKER_USERNAME}"
+          - echo ${DOCKER_USERNAME}
 promotions:
   - name: Private EC2 deploy
     pipeline_file: private-ec2-deploy.yml
